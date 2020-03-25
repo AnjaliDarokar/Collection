@@ -1,0 +1,200 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+struct Student
+{
+	int id;
+	string name;
+	Student *next;
+};
+
+class LinkedList
+{
+	Student *head;
+	Student *tail;
+	Student *CreateNode(int id,string name)
+	{
+		Student *temp=new Student();
+		temp->id=id;
+		temp->name=name;
+		temp->next=NULL;
+		return temp;
+	}
+public:
+	LinkedList():head(NULL),tail(NULL)
+	{
+	}
+	void Append(int id,string name)
+	{
+		Student *stud=CreateNode(id,name);
+		if(head==NULL)
+		{
+			head=stud;
+		}
+		else
+		{
+			tail->next=stud;
+		}
+		tail=stud;
+	}
+	void Prepend(int id,string name)
+	{
+		if(head==NULL)
+		{
+			Append(id,name);
+		}
+		else
+		{
+			Student *stud=CreateNode(id,name);
+			stud->next=head;
+			head=stud;
+		}
+
+	}
+	void DeleteFirst()
+	{
+    Student* temp = head;
+    head = temp->next;
+    cout<<"The First Record To Be Deleted Is: "<<temp->name<<"\n\n";
+    delete temp;
+	}
+	void DeleteLast()
+	{
+    Student* prev =NULL;
+    Student* temp = head;
+    while(temp->next!=NULL)
+    { 
+      prev = temp;
+      temp = temp->next;
+    }
+    cout<<"The Last Record To Be Deleted Is: "<<temp->name<<"\n\n";
+    prev->next = NULL;
+    delete temp;
+	}
+	void DeleteByPosition(int pos)
+	{
+    int count = 1;
+    Student* prev =NULL;
+    Student* temp = head;
+    if(pos==1)
+      head = temp->next;
+    while(count!=pos)
+    {
+      prev = temp;
+      temp = temp->next;
+      count++;
+    }
+      cout<<"The Element At Postion: "<<pos<<" To Be Deleted Is: "<<temp->name<<"\n\n";
+      prev->next=temp->next;
+      delete temp;
+	}
+	void DeleteByValue(int id)
+	{
+    Student* prev =NULL;
+     Student* temp = head;
+    while(temp->id!=id)
+    {
+      prev = temp;
+      temp = temp->next;
+    }
+      cout<<"The Element with ID: "<<id<<" To Be Deleted Is: "<<temp->name<<"\n\n";
+       prev->next=temp->next;
+      delete temp;
+	}
+	void InsertByPosition(int pos,int id,string name)
+	{
+    int count = 1;
+     Student* prev =NULL;
+     Student* temp = head;
+     Student* stud1 = CreateNode(id,name);
+   if(pos==1)
+   Prepend(id,name);
+    while(count!=pos)
+    {
+      prev = temp;
+      temp = temp->next;
+      count++;
+    }
+   if(temp->next==NULL)
+    Append(id,name);
+  prev->next = stud1;
+  stud1->next = temp;
+  cout<<"The New Record Inserted At "<<pos<<" Has ID: "<<stud1->id<<" And Name: "<<stud1->name<<"\n\n";
+  }
+	void InsertAfter(int criteriaId,int id,string name)
+	{
+    Student* temp = head;
+    Student* prev = NULL;
+    Student* stud1 = CreateNode(id,name);
+    while(temp->id!=criteriaId)
+    {
+       prev = temp;
+      temp = temp->next;
+    }
+    stud1->next = temp->next;
+    temp->next = stud1;
+    cout<<"The New Record Inserted After "<<temp->name<<" Is: ID= "<<stud1->id<<" And Name: "<<stud1->name<<"\n\n";
+	}
+	void InsertBefore(int criteriaId,int id,string name)
+	{
+     Student* temp = head;
+    Student* prev = NULL;
+    Student* stud1 = CreateNode(id,name);
+    while(temp->id!=criteriaId)
+    {
+       prev = temp;
+      temp = temp->next;
+    }
+    prev->next = stud1;
+    stud1->next = temp;
+    cout<<"The New Record Inserted Before "<<temp->name<<" Is: ID= "<<stud1->id<<" And Name: "<<stud1->name<<"\n\n";
+   
+	}
+	void List()
+	{
+	cout<<"_________List Of Students_________________\n\n";
+	Student *trav=head;
+	while(trav!=NULL)
+	{
+		cout<<trav->id<<'\t'<<trav->name<<'\n';
+		trav=trav->next;
+	}
+	cout<<"__________________________\n\n";
+	}
+	~LinkedList()
+	{
+	}
+};
+
+
+int main()
+{
+	LinkedList lkd;
+	lkd.Prepend(96,"Mithali");
+	lkd.Append(101,"Sachin");
+	lkd.Append(102,"Rahul");
+	lkd.Append(103,"Sewag");
+	lkd.Append(104,"VVS");
+	lkd.Append(105,"Kumble");
+	lkd.Prepend(100,"Virat");
+	lkd.Prepend(99,"Rohith");
+	lkd.Prepend(98,"KLR");
+	lkd.Prepend(97,"Shifali");
+	lkd.List();
+  lkd.DeleteFirst();
+  lkd.List();
+  lkd.DeleteLast();
+   lkd.List();
+  lkd.DeleteByPosition(4);
+  lkd.List();
+  lkd.DeleteByValue(102);
+  lkd.List();
+  lkd.InsertByPosition(4,80,"Gokul");
+  lkd.List();
+  lkd.InsertAfter(80,83,"Anjali");
+  lkd.List();
+  lkd.InsertBefore(80,82,"Alaia");
+  lkd.List();
+	return 0;
+}
